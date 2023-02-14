@@ -1,0 +1,16 @@
+[versions]
+
+# Project Settings
+projectVersion = "2.20.0"
+
+projectGroup = "com.earth2me.essentials"
+projectName = "EssentialsX"
+projectDescription = "The not so modern Essentials suite for Spigot and Paper."
+projectGithub = "https://github.com/Crazy-Crew/Essentials"
+projectBeta = "false"
+projectExtension = "plugin"
+
+[plugins]
+
+minotaur = { id = "com.modrinth.minotaur", version = "2.6.0" }
+run-paper = { id = "xyz.jpenilla.run-paper", version = "2.0.0" }
