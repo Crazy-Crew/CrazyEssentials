@@ -1,4 +1,4 @@
 /**
  * API classes, services, and events provided by EssentialsX 3.x.
  */
-package com.ryderbelserion.essentialsx.api.v3;
+package us.crazycrew.crazyessentials.api.v3;
