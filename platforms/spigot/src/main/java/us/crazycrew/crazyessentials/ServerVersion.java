@@ -18,7 +18,7 @@ public enum ServerVersion {
     v1_18(118),
     v1_19(119),
 
-    UNKONWN(-1);
+    UNKNOWN(-1);
 
     private static final ServerVersion currentVersion;
     private static final String bukkitVersion;
@@ -42,7 +42,7 @@ public enum ServerVersion {
         try {
             return valueOf(value);
         } catch (IllegalArgumentException error) {
-            return UNKONWN;
+            return UNKNOWN;
         }
     }
 
@@ -83,6 +83,6 @@ public enum ServerVersion {
     }
 
     private static boolean isValidVersion(ServerVersion compareVersion) {
-        return currentVersion != UNKONWN && compareVersion != UNKONWN;
+        return currentVersion != UNKNOWN && compareVersion != UNKNOWN;
     }
 }
