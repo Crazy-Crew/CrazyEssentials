@@ -1,7 +1,7 @@
 [versions]
 
 # Project Settings
-projectVersion = "2.20.0"
+projectVersion = "1.0.0.0"
 
 projectGroup = "com.earth2me.essentials"
 projectName = "EssentialsX"
