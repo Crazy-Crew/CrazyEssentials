@@ -3,13 +3,13 @@ package com.earth2me.essentials.commands;
 import com.earth2me.essentials.User;
 import com.earth2me.essentials.craftbukkit.Inventories;
 import com.earth2me.essentials.utils.TriState;
-import com.earth2me.essentials.utils.VersionUtil;
 import com.google.common.collect.Lists;
 import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import us.crazycrew.crazyessentials.ServerVersion;
 
 import java.util.Collections;
 import java.util.List;
@@ -48,7 +48,7 @@ public class Commandhat extends EssentialsCommand {
 
             final PlayerInventory inv = user.getBase().getInventory();
             final ItemStack head = inv.getHelmet();
-            if (VersionUtil.getServerBukkitVersion().isHigherThan(VersionUtil.v1_9_4_R01) && head != null && head.getEnchantments().containsKey(Enchantment.BINDING_CURSE) && !user.isAuthorized("essentials.hat.ignore-binding")) {
+            if (ServerVersion.isHigherThan(ServerVersion.v1_9) && head != null && head.getEnchantments().containsKey(Enchantment.BINDING_CURSE) && !user.isAuthorized("essentials.hat.ignore-binding")) {
                 user.sendMessage(tl("hatCurse"));
                 return;
             }
@@ -62,7 +62,7 @@ public class Commandhat extends EssentialsCommand {
         final ItemStack head = inv.getHelmet();
         if (head == null || head.getType() == Material.AIR) {
             user.sendMessage(tl("hatEmpty"));
-        } else if (VersionUtil.getServerBukkitVersion().isHigherThan(VersionUtil.v1_9_4_R01) && head.getEnchantments().containsKey(Enchantment.BINDING_CURSE) && !user.isAuthorized("essentials.hat.ignore-binding")) {
+        } else if (ServerVersion.isHigherThan(ServerVersion.v1_9) && head.getEnchantments().containsKey(Enchantment.BINDING_CURSE) && !user.isAuthorized("essentials.hat.ignore-binding")) {
             user.sendMessage(tl("hatCurse"));
         } else {
             final ItemStack air = new ItemStack(Material.AIR);

@@ -5,7 +5,6 @@ import com.earth2me.essentials.Trade;
 import com.earth2me.essentials.Trade.OverflowType;
 import com.earth2me.essentials.User;
 import com.earth2me.essentials.craftbukkit.Inventories;
-import com.earth2me.essentials.utils.VersionUtil;
 import net.ess3.api.MaxMoneyException;
 import org.bukkit.Material;
 import org.bukkit.Server;
@@ -13,6 +12,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
+import us.crazycrew.crazyessentials.ServerVersion;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -163,7 +163,7 @@ public class Commandcondense extends EssentialsCommand {
                 iter.remove();
                 continue;
             }
-            if (VersionUtil.PRE_FLATTENING && inputSlot.getDurability() == Short.MAX_VALUE) {
+            if (ServerVersion.isLegacy() && inputSlot.getDurability() == Short.MAX_VALUE) {
                 inputSlot.setDurability((short) 0);
             }
             if (!inputSlot.isSimilar(stack)) {

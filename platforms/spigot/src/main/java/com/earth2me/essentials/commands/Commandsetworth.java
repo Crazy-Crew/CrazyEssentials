@@ -29,7 +29,7 @@ public class Commandsetworth extends EssentialsCommand {
             price = args[1];
         }
 
-        ess.getWorth().setPrice(ess, stack, FloatUtil.parseDouble(price));
+        ess.getWorth().setPrice(stack, FloatUtil.parseDouble(price));
         user.sendMessage(tl("worthSet"));
     }
 
@@ -39,7 +39,7 @@ public class Commandsetworth extends EssentialsCommand {
             throw new NotEnoughArgumentsException();
         }
 
-        ess.getWorth().setPrice(ess, ess.getItemDb().get(args[0]), FloatUtil.parseDouble(args[1]));
+        ess.getWorth().setPrice(ess.getItemDb().get(args[0]), FloatUtil.parseDouble(args[1]));
         sender.sendMessage(tl("worthSet"));
     }
 }

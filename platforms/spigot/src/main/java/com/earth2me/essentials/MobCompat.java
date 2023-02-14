@@ -1,7 +1,6 @@
 package com.earth2me.essentials;
 
 import com.earth2me.essentials.utils.EnumUtil;
-import com.earth2me.essentials.utils.VersionUtil;
 import net.ess3.nms.refl.ReflUtil;
 import org.bukkit.TreeSpecies;
 import org.bukkit.entity.Axolotl;
@@ -17,6 +16,7 @@ import org.bukkit.entity.Panda;
 import org.bukkit.entity.Parrot;
 import org.bukkit.entity.TropicalFish;
 import org.bukkit.entity.Villager;
+import us.crazycrew.crazyessentials.ServerVersion;
 
 import java.lang.reflect.Method;
 
@@ -51,7 +51,7 @@ public final class MobCompat {
 
     // Older cats are Ocelots, whereas 1.14+ cats are Cats
     public static void setCatType(final Entity entity, final CatType type) {
-        if (VersionUtil.getServerBukkitVersion().isLowerThan(VersionUtil.v1_14_R01)) {
+        if (ServerVersion.isLessThan(ServerVersion.v1_14)) {
             ((Ocelot) entity).setCatType(Ocelot.Type.valueOf(type.ocelotTypeName));
         } else {
             final Class cat = ReflUtil.getClassCached("org.bukkit.entity.Cat");
@@ -72,7 +72,7 @@ public final class MobCompat {
         }
         final Villager villager = (Villager) entity;
         villager.setProfession(profession.asEnum());
-        if (VersionUtil.getServerBukkitVersion().isLowerThan(VersionUtil.v1_14_R01)) {
+        if (ServerVersion.isLessThan(ServerVersion.v1_14)) {
             final Class villagerCareer = ReflUtil.getClassCached("org.bukkit.entity.Villager$Career");
             final Method setCareer = ReflUtil.getMethodCached(Villager.class, "setCareer", villagerCareer);
             try {
@@ -85,7 +85,7 @@ public final class MobCompat {
 
     // Only 1.14+ villagers have biome variants
     public static void setVillagerType(final Entity entity, final String type) {
-        if (VersionUtil.getServerBukkitVersion().isLowerThan(VersionUtil.v1_14_R01)) {
+        if (ServerVersion.isLessThan(ServerVersion.v1_14)) {
             return;
         }
         if (entity instanceof Villager) {
@@ -95,7 +95,7 @@ public final class MobCompat {
 
     // Llamas only exist in 1.11+
     public static void setLlamaColor(final Entity entity, final String color) {
-        if (VersionUtil.getServerBukkitVersion().isLowerThan(VersionUtil.v1_11_R01)) {
+        if (ServerVersion.isLessThan(ServerVersion.v1_11)) {
             return;
         }
         if (entity instanceof Llama) {
@@ -105,7 +105,7 @@ public final class MobCompat {
 
     // Parrots only exist in 1.12+
     public static void setParrotVariant(final Entity entity, final String variant) {
-        if (VersionUtil.getServerBukkitVersion().isLowerThan(VersionUtil.v1_12_0_R01)) {
+        if (ServerVersion.isLessThan(ServerVersion.v1_12)) {
             return;
         }
         if (entity instanceof Parrot) {
@@ -115,7 +115,7 @@ public final class MobCompat {
 
     // Tropical fish only exist in 1.13+
     public static void setTropicalFishPattern(final Entity entity, final String pattern) {
-        if (VersionUtil.getServerBukkitVersion().isLowerThan(VersionUtil.v1_12_0_R01)) {
+        if (ServerVersion.isLessThan(ServerVersion.v1_12)) {
             return;
         }
         if (entity instanceof TropicalFish) {
@@ -125,7 +125,7 @@ public final class MobCompat {
 
     // Mushroom cow variant API only exists in 1.14+
     public static void setMooshroomVariant(final Entity entity, final String variant) {
-        if (VersionUtil.getServerBukkitVersion().isLowerThan(VersionUtil.v1_14_R01)) {
+        if (ServerVersion.isLessThan(ServerVersion.v1_14)) {
             return;
         }
         if (entity instanceof MushroomCow) {
@@ -135,7 +135,7 @@ public final class MobCompat {
 
     // Pandas only exists in 1.14+
     public static void setPandaGene(final Entity entity, final String gene, final boolean mainGene) {
-        if (VersionUtil.getServerBukkitVersion().isLowerThan(VersionUtil.v1_14_R01)) {
+        if (ServerVersion.isLessThan(ServerVersion.v1_14)) {
             return;
         }
         if (entity instanceof Panda) {
@@ -151,7 +151,7 @@ public final class MobCompat {
 
     // Foxes only exist in 1.14+
     public static void setFoxType(final Entity entity, final String type) {
-        if (VersionUtil.getServerBukkitVersion().isLowerThan(VersionUtil.v1_14_R01)) {
+        if (ServerVersion.isLessThan(ServerVersion.v1_14)) {
             return;
         }
         if (entity instanceof Fox) {
@@ -160,7 +160,7 @@ public final class MobCompat {
     }
 
     public static void setAxolotlVariant(final Entity entity, final String variant) {
-        if (VersionUtil.getServerBukkitVersion().isLowerThan(VersionUtil.v1_17_R01)) {
+        if (ServerVersion.isLessThan(ServerVersion.v1_17)) {
             return;
         }
         if (entity instanceof Axolotl) {
@@ -169,7 +169,7 @@ public final class MobCompat {
     }
 
     public static void setFrogVariant(final Entity entity, final String variant) {
-        if (VersionUtil.getServerBukkitVersion().isLowerThan(VersionUtil.v1_19_R01)) {
+        if (ServerVersion.isLessThan(ServerVersion.v1_19)) {
             return;
         }
         if (entity instanceof Frog) {
@@ -178,7 +178,7 @@ public final class MobCompat {
     }
 
     public static void setBoatVariant(final Entity entity, final BoatVariant variant) {
-        if (VersionUtil.getServerBukkitVersion().isLowerThan(VersionUtil.v1_9_R01)) {
+        if (ServerVersion.isLessThan(ServerVersion.v1_9)) {
             return;
         }
         final Boat boat;
@@ -187,7 +187,7 @@ public final class MobCompat {
         } else {
             return;
         }
-        if (VersionUtil.getServerBukkitVersion().isLowerThan(VersionUtil.v1_19_R01)) {
+        if (ServerVersion.isLessThan(ServerVersion.v1_19)) {
             //noinspection deprecation
             boat.setWoodType(TreeSpecies.valueOf(variant.getTreeSpecies()));
         } else {

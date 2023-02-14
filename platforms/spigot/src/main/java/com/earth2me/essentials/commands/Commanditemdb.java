@@ -3,10 +3,10 @@ package com.earth2me.essentials.commands;
 import com.earth2me.essentials.CommandSource;
 import com.earth2me.essentials.utils.MaterialUtil;
 import com.earth2me.essentials.utils.StringUtil;
-import com.earth2me.essentials.utils.VersionUtil;
 import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.inventory.ItemStack;
+import us.crazycrew.crazyessentials.ServerVersion;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -37,7 +37,7 @@ public class Commanditemdb extends EssentialsCommand {
 
         String itemId = "none";
 
-        if (VersionUtil.PRE_FLATTENING) {
+        if (ServerVersion.isLegacy()) {
             itemId = itemStack.getType().getId() + ":" + itemStack.getDurability();
         }
 

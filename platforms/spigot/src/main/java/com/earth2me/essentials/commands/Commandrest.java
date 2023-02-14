@@ -3,9 +3,9 @@ package com.earth2me.essentials.commands;
 import com.earth2me.essentials.CommandSource;
 import com.earth2me.essentials.IUser;
 import com.earth2me.essentials.User;
-import com.earth2me.essentials.utils.VersionUtil;
 import org.bukkit.Server;
 import org.bukkit.Statistic;
+import us.crazycrew.crazyessentials.ServerVersion;
 
 import java.util.Collections;
 import java.util.List;
@@ -19,7 +19,7 @@ public class Commandrest extends EssentialsLoopCommand {
 
     @Override
     public void run(final Server server, final CommandSource sender, final String commandLabel, final String[] args) throws Exception {
-        if (VersionUtil.PRE_FLATTENING) {
+        if (ServerVersion.isLegacy()) {
             sender.sendMessage(tl("unsupportedFeature"));
             return;
         }

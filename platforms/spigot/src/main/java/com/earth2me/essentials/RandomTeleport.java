@@ -3,13 +3,12 @@ package com.earth2me.essentials;
 import com.earth2me.essentials.config.EssentialsConfiguration;
 import com.earth2me.essentials.config.entities.LazyLocation;
 import com.earth2me.essentials.utils.LocationUtil;
-import com.earth2me.essentials.utils.VersionUtil;
 import io.papermc.lib.PaperLib;
 import net.ess3.api.InvalidWorldException;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
-
+import us.crazycrew.crazyessentials.ServerVersion;
 import java.io.File;
 import java.util.HashSet;
 import java.util.List;
@@ -21,7 +20,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class RandomTeleport implements IConf {
     private static final Random RANDOM = new Random();
-    private static final int HIGHEST_BLOCK_Y_OFFSET = VersionUtil.getServerBukkitVersion().isHigherThanOrEqualTo(VersionUtil.v1_15_R01) ? 1 : 0;
+    private static final int HIGHEST_BLOCK_Y_OFFSET = ServerVersion.isAtLeast(ServerVersion.v1_15) ? 1 : 0;
     private final IEssentials ess;
     private final EssentialsConfiguration config;
     private final ConcurrentLinkedQueue<Location> cachedLocations = new ConcurrentLinkedQueue<>();

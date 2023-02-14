@@ -3,12 +3,12 @@ package com.earth2me.essentials;
 import com.earth2me.essentials.craftbukkit.Inventories;
 import com.earth2me.essentials.craftbukkit.SetExpFix;
 import com.earth2me.essentials.utils.NumberUtil;
-import com.earth2me.essentials.utils.VersionUtil;
 import net.ess3.api.IEssentials;
 import net.ess3.api.IUser;
 import net.ess3.api.MaxMoneyException;
 import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
+import us.crazycrew.crazyessentials.ServerVersion;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -96,7 +96,7 @@ public class Trade {
             if (charge.getItemStack() != null) {
                 sb.append(charge.getItemStack().getAmount()).append(",");
                 sb.append(charge.getItemStack().getType()).append(",");
-                if (VersionUtil.PRE_FLATTENING) {
+                if (ServerVersion.isLegacy()) {
                     sb.append(charge.getItemStack().getDurability());
                 }
             }
@@ -122,7 +122,7 @@ public class Trade {
             if (pay.getItemStack() != null) {
                 sb.append(pay.getItemStack().getAmount()).append(",");
                 sb.append(pay.getItemStack().getType()).append(",");
-                if (VersionUtil.PRE_FLATTENING) {
+                if (ServerVersion.isLegacy()) {
                     sb.append(pay.getItemStack().getDurability());
                 }
             }

@@ -3,7 +3,6 @@ package com.earth2me.essentials.chat.processing;
 import com.earth2me.essentials.Essentials;
 import com.earth2me.essentials.I18n;
 import com.earth2me.essentials.chat.EssentialsChat;
-import com.earth2me.essentials.utils.VersionUtil;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;

@@ -5,7 +5,6 @@ import com.earth2me.essentials.User;
 import com.earth2me.essentials.craftbukkit.Inventories;
 import com.earth2me.essentials.utils.FormatUtil;
 import com.earth2me.essentials.utils.MaterialUtil;
-import com.earth2me.essentials.utils.VersionUtil;
 import net.ess3.api.IEssentials;
 import net.ess3.api.PluginKey;
 import org.bukkit.Color;
@@ -29,6 +28,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionEffect;
+import us.crazycrew.crazyessentials.ServerVersion;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -196,9 +196,10 @@ public abstract class AbstractItemDb implements IConf, net.ess3.api.IItemDb {
         }
 
         String mat = name(is);
-        if (VersionUtil.getServerBukkitVersion().isLowerThanOrEqualTo(VersionUtil.v1_12_2_R01) && is.getData().getData() != 0) {
+        if (ServerVersion.isAtLeast(ServerVersion.v1_12) && is.getData().getData() != 0) {
             mat = mat + ":" + is.getData().getData();
         }
+
         final int quantity = is.getAmount();
         final StringBuilder sb = new StringBuilder(); // Add space AFTER you add something. We can trim at end.
         sb.append(mat).append(" ").append(quantity).append(" ");
@@ -283,7 +284,7 @@ public abstract class AbstractItemDb implements IConf, net.ess3.api.IItemDb {
         } else if (MaterialUtil.isPotion(material)) {
             final boolean splash;
             final Collection<PotionEffect> effects;
-            if (VersionUtil.PRE_FLATTENING) {
+            if (ServerVersion.isLegacy()) {
                 final Potion potion = Potion.fromDamage(is.getDurability());
                 splash = potion.isSplash();
                 effects = potion.getEffects();

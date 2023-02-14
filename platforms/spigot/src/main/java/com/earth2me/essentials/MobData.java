@@ -3,7 +3,6 @@ package com.earth2me.essentials;
 import com.earth2me.essentials.craftbukkit.Inventories;
 import com.earth2me.essentials.utils.EnumUtil;
 import com.earth2me.essentials.utils.StringUtil;
-import com.earth2me.essentials.utils.VersionUtil;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Ageable;
@@ -28,6 +27,7 @@ import org.bukkit.entity.Zombie;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Colorable;
+import us.crazycrew.crazyessentials.ServerVersion;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -294,7 +294,7 @@ public enum MobData {
         } else if (this.value.equals(Data.BABY)) {
             ((Ageable) spawned).setBaby();
         } else if (this.value.equals(Data.CHEST)) {
-            if (VersionUtil.getServerBukkitVersion().isHigherThanOrEqualTo(VersionUtil.v1_11_R01)) {
+            if (ServerVersion.isLessThan(ServerVersion.v1_11)) {
                 ((ChestedHorse) spawned).setCarryingChest(true);
             } else {
                 ((Horse) spawned).setCarryingChest(true);

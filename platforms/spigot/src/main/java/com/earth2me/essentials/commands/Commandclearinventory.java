@@ -5,11 +5,11 @@ import com.earth2me.essentials.User;
 import com.earth2me.essentials.craftbukkit.Inventories;
 import com.earth2me.essentials.utils.NumberUtil;
 import com.earth2me.essentials.utils.StringUtil;
-import com.earth2me.essentials.utils.VersionUtil;
 import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import us.crazycrew.crazyessentials.ServerVersion;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -121,7 +121,7 @@ public class Commandclearinventory extends EssentialsCommand {
         } else {
             for (final Item item : items) {
                 final ItemStack stack = new ItemStack(item.getMaterial());
-                if (VersionUtil.PRE_FLATTENING) {
+                if (ServerVersion.isLegacy()) {
                     //noinspection deprecation
                     stack.setDurability(item.getData());
                 }

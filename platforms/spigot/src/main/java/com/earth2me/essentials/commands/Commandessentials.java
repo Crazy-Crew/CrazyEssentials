@@ -13,7 +13,6 @@ import com.earth2me.essentials.utils.EnumUtil;
 import com.earth2me.essentials.utils.FloatUtil;
 import com.earth2me.essentials.utils.NumberUtil;
 import com.earth2me.essentials.utils.PasteUtil;
-import com.earth2me.essentials.utils.VersionUtil;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.gson.JsonArray;
@@ -21,7 +20,6 @@ import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Server;
@@ -32,9 +30,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
-import org.bukkit.plugin.PluginManager;
 import org.bukkit.scheduler.BukkitRunnable;
-
 import java.io.File;
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
@@ -58,7 +54,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
-
 import static com.earth2me.essentials.I18n.tl;
 
 // This command has 4 undocumented behaviours #EasterEgg
@@ -72,45 +67,13 @@ public class Commandessentials extends EssentialsCommand {
     private static final String NYAN_TUNE = "1D#,1E,2F#,,2A#,1E,1D#,1E,2F#,2B,2D#,2E,2D#,2A#,2B,,2F#,,1D#,1E,2F#,2B,2C#,2A#,2B,2C#,2E,2D#,2E,2C#,,2F#,,2G#,,1D,1D#,,1C#,1D,1C#,1B,,1B,,1C#,,1D,,1D,1C#,1B,1C#,1D#,2F#,2G#,1D#,2F#,1C#,1D#,1B,1C#,1B,1D#,,2F#,,2G#,1D#,2F#,1C#,1D#,1B,1D,1D#,1D,1C#,1B,1C#,1D,,1B,1C#,1D#,2F#,1C#,1D,1C#,1B,1C#,,1B,,1C#,,2F#,,2G#,,1D,1D#,,1C#,1D,1C#,1B,,1B,,1C#,,1D,,1D,1C#,1B,1C#,1D#,2F#,2G#,1D#,2F#,1C#,1D#,1B,1C#,1B,1D#,,2F#,,2G#,1D#,2F#,1C#,1D#,1B,1D,1D#,1D,1C#,1B,1C#,1D,,1B,1C#,1D#,2F#,1C#,1D,1C#,1B,1C#,,1B,,1B,,1B,,1F#,1G#,1B,,1F#,1G#,1B,1C#,1D#,1B,1E,1D#,1E,2F#,1B,,1B,,1F#,1G#,1B,1E,1D#,1C#,1B,,,,1F#,1B,,1F#,1G#,1B,,1F#,1G#,1B,1B,1C#,1D#,1B,1F#,1G#,1F#,1B,,1B,1A#,1B,1F#,1G#,1B,1E,1D#,1E,2F#,1B,,1A#,,1B,,1F#,1G#,1B,,1F#,1G#,1B,1C#,1D#,1B,1E,1D#,1E,2F#,1B,,1B,,1F#,1G#,1B,1F#,1E,1D#,1C#,1B,,,,1F#,1B,,1F#,1G#,1B,,1F#,1G#,1B,1B,1C#,1D#,1B,1F#,1G#,1F#,1B,,1B,1A#,1B,1F#,1G#,1B,1E,1D#,1E,2F#,1B,,1A#,,1B,,1F#,1G#,1B,,1F#,1G#,1B,1C#,1D#,1B,1E,1D#,1E,2F#,1B,,1B,,1F#,1G#,1B,1F#,1E,1D#,1C#,1B,,,,1F#,1B,,1F#,1G#,1B,,1F#,1G#,1B,1B,1C#,1D#,1B,1F#,1G#,1F#,1B,,1B,1A#,1B,1F#,1G#,1B,1E,1D#,1E,2F#,1B,,1A#,,1B,,1F#,1G#,1B,,1F#,1G#,1B,1C#,1D#,1B,1E,1D#,1E,2F#,1B,,1B,,1F#,1G#,1B,1F#,1E,1D#,1C#,1B,,,,1F#,1B,,1F#,1G#,1B,,1F#,1G#,1B,1B,1C#,1D#,1B,1F#,1G#,1F#,1B,,1B,1A#,1B,1F#,1G#,1B,1E,1D#,1E,2F#,1B,,1A#,,1B,,1F#,1G#,1B,,1F#,1G#,1B,1C#,1D#,1B,1E,1D#,1E,2F#,1B,,1B,,1F#,1G#,1B,1F#,1E,1D#,1C#,1B,,,,1F#,1B,,1F#,1G#,1B,,1F#,1G#,1B,1B,1C#,1D#,1B,1F#,1G#,1F#,1B,,1B,1A#,1B,1F#,1G#,1B,1E,1D#,1E,2F#,1B,,1B,,";
     private static final String[] CONSOLE_MOO = new String[] {"         (__)", "         (oo)", "   /------\\/", "  / |    ||", " *  /\\---/\\", "    ~~   ~~", "....\"Have you mooed today?\"..."};
     private static final String[] PLAYER_MOO = new String[] {"            (__)", "            (oo)", "   /------\\/", "  /  |      | |", " *  /\\---/\\", "    ~~    ~~", "....\"Have you mooed today?\"..."};
-    private static final List<String> versionPlugins = Arrays.asList(
-        "Vault", // API
-        "Reserve", // API
-        "PlaceholderAPI", // API
-        "CMI", // potential for issues
-        "Towny", // past issues; admins should ensure latest
-        "ChestShop", // past issues; admins should ensure latest
-        "Citizens", // fires player events
-        "LuckPerms", // permissions (recommended)
-        "UltraPermissions",
-        "PermissionsEx", // permissions (unsupported)
-        "GroupManager", // permissions (unsupported)
-        "bPermissions", // permissions (unsupported)
-        "DiscordSRV", // potential for issues if EssentialsXDiscord is installed
 
-        // Chat signing bypass plugins that can potentially break EssentialsChat
-        "AntiPopup",
-        "NoChatReports",
-        "NoEncryption"
-    );
     private static final List<String> officialPlugins = Arrays.asList(
         "EssentialsAntiBuild",
         "EssentialsChat",
-        "EssentialsDiscord",
-        "EssentialsDiscordLink",
-        "EssentialsGeoIP",
-        "EssentialsProtect",
-        "EssentialsSpawn",
-        "EssentialsXMPP"
+        "EssentialsSpawn"
     );
-    private static final List<String> warnPlugins = Arrays.asList(
-        "PermissionsEx",
-        "GroupManager",
-        "bPermissions",
 
-        // Brain-dead chat signing bypass that break EssentialsChat
-        "NoChatReports",
-        "NoEncryption"
-    );
     private transient TuneRunnable currentTune = null;
 
     public Commandessentials() {
@@ -128,10 +91,6 @@ public class Commandessentials extends EssentialsCommand {
             case "debug":
             case "verbose":
                 runDebug(server, sender, commandLabel, args);
-                break;
-            case "ver":
-            case "version":
-                runVersion(server, sender, commandLabel, args);
                 break;
             case "cmd":
             case "commands":
@@ -262,10 +221,7 @@ public class Commandessentials extends EssentialsCommand {
         serverData.addProperty("server-brand", Bukkit.getName());
         serverData.addProperty("online-mode", ess.getOnlineModeProvider().getOnlineModeString());
         final JsonObject supportStatus = new JsonObject();
-        final VersionUtil.SupportStatus status = VersionUtil.getServerSupportStatus();
-        supportStatus.addProperty("status", status.name());
-        supportStatus.addProperty("supported", status.isSupported());
-        supportStatus.addProperty("trigger", VersionUtil.getSupportStatusClass());
+
         serverData.add("support-status", supportStatus);
         dump.add("server-data", serverData);
 
@@ -302,17 +258,18 @@ public class Commandessentials extends EssentialsCommand {
             pluginData.addProperty("main", info.getMain());
             pluginData.addProperty("enabled", plugin.isEnabled());
             pluginData.addProperty("official", plugin == ess || officialPlugins.contains(name));
-            pluginData.addProperty("unsupported", warnPlugins.contains(name));
 
             final JsonArray authors = new JsonArray();
             for (final String author : info.getAuthors()) {
                 authors.add(author == null ? JsonNull.INSTANCE : new JsonPrimitive(author));
             }
+
             pluginData.add("authors", authors);
 
             if (name.startsWith("Essentials") && !name.equals("Essentials")) {
                 addons.add(pluginData);
             }
+
             plugins.add(pluginData);
         }
         essData.add("addons", addons);
@@ -698,111 +655,6 @@ public class Commandessentials extends EssentialsCommand {
                     sender.sendMessage(tl("usermapEntry", sanitizedName, userMap.getNameCache().get(sanitizedName).toString()));
                 }
             }
-        }
-    }
-
-    // Displays versions of EssentialsX and related plugins.
-    private void runVersion(final Server server, final CommandSource sender, final String commandLabel, final String[] args) throws Exception {
-        if (sender.isPlayer() && !ess.getUser(sender.getPlayer()).isAuthorized("essentials.version")) return;
-
-        boolean isMismatched = false;
-        boolean isVaultInstalled = false;
-        boolean isUnsupported = false;
-        final VersionUtil.SupportStatus supportStatus = VersionUtil.getServerSupportStatus();
-        final PluginManager pm = server.getPluginManager();
-        final String essVer = pm.getPlugin("Essentials").getDescription().getVersion();
-
-        final String serverMessageKey;
-        if (supportStatus.isSupported()) {
-            serverMessageKey = "versionOutputFine";
-        } else if (supportStatus == VersionUtil.SupportStatus.UNSTABLE) {
-            serverMessageKey = "versionOutputUnsupported";
-        } else {
-            serverMessageKey = "versionOutputWarn";
-        }
-
-        sender.sendMessage(tl(serverMessageKey, "Server", server.getBukkitVersion() + " " + server.getVersion()));
-        sender.sendMessage(tl(serverMessageKey, "Brand", server.getName()));
-        sender.sendMessage(tl("versionOutputFine", "EssentialsX", essVer));
-
-        for (final Plugin plugin : pm.getPlugins()) {
-            final PluginDescriptionFile desc = plugin.getDescription();
-            String name = desc.getName();
-            final String version = desc.getVersion();
-
-            if (name.startsWith("Essentials") && !name.equalsIgnoreCase("Essentials")) {
-                if (officialPlugins.contains(name)) {
-                    name = name.replace("Essentials", "EssentialsX");
-
-                    if (!version.equalsIgnoreCase(essVer)) {
-                        isMismatched = true;
-                        sender.sendMessage(tl("versionOutputWarn", name, version));
-                    } else {
-                        sender.sendMessage(tl("versionOutputFine", name, version));
-                    }
-                } else {
-                    sender.sendMessage(tl("versionOutputUnsupported", name, version));
-                    isUnsupported = true;
-                }
-            }
-
-            if (versionPlugins.contains(name)) {
-                if (warnPlugins.contains(name)) {
-                    sender.sendMessage(tl("versionOutputUnsupported", name, version));
-                    isUnsupported = true;
-                } else {
-                    sender.sendMessage(tl("versionOutputFine", name, version));
-                }
-            }
-
-            if (name.equals("Vault")) isVaultInstalled = true;
-        }
-
-        final String layer;
-        if (ess.getSettings().isEcoDisabled()) {
-            layer = "Disabled";
-        } else if (EconomyLayers.isLayerSelected()) {
-            final EconomyLayer economyLayer = EconomyLayers.getSelectedLayer();
-            layer = economyLayer.getName() + " (" + economyLayer.getBackendName() + ")";
-        } else {
-            layer = "None";
-        }
-        sender.sendMessage(tl("versionOutputEconLayer", layer));
-
-        if (isMismatched) {
-            sender.sendMessage(tl("versionMismatchAll"));
-        }
-
-        if (!isVaultInstalled) {
-            sender.sendMessage(tl("versionOutputVaultMissing"));
-        }
-
-        if (isUnsupported) {
-            sender.sendMessage(tl("versionOutputUnsupportedPlugins"));
-        }
-
-        switch (supportStatus) {
-            case NMS_CLEANROOM:
-                sender.sendMessage(ChatColor.DARK_RED + tl("serverUnsupportedCleanroom"));
-                break;
-            case DANGEROUS_FORK:
-                sender.sendMessage(ChatColor.DARK_RED + tl("serverUnsupportedDangerous"));
-                break;
-            case STUPID_PLUGIN:
-                sender.sendMessage(ChatColor.DARK_RED + tl("serverUnsupportedDumbPlugins"));
-                break;
-            case UNSTABLE:
-                sender.sendMessage(ChatColor.DARK_RED + tl("serverUnsupportedMods"));
-                break;
-            case OUTDATED:
-                sender.sendMessage(ChatColor.RED + tl("serverUnsupported"));
-                break;
-            case LIMITED:
-                sender.sendMessage(ChatColor.RED + tl("serverUnsupportedLimitedApi"));
-                break;
-        }
-        if (VersionUtil.getSupportStatusClass() != null) {
-            sender.sendMessage(ChatColor.RED + tl("serverUnsupportedClass", VersionUtil.getSupportStatusClass()));
         }
     }
 

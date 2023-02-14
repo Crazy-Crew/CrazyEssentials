@@ -11,7 +11,6 @@ import com.earth2me.essentials.utils.EnumUtil;
 import com.earth2me.essentials.utils.FormatUtil;
 import com.earth2me.essentials.utils.NumberUtil;
 import com.earth2me.essentials.utils.TriState;
-import com.earth2me.essentials.utils.VersionUtil;
 import com.google.common.collect.Lists;
 import net.ess3.api.IEssentials;
 import net.ess3.api.MaxMoneyException;
@@ -32,6 +31,7 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import us.crazycrew.crazyessentials.ServerVersion;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -324,7 +324,7 @@ public class User extends UserData implements Comparable<User>, IMessageRecipien
             if (isAuthorized("essentials.itemspawn.item-all") || isAuthorized("essentials.itemspawn.item-" + name))
                 return true;
 
-            if (VersionUtil.PRE_FLATTENING) {
+            if (ServerVersion.isLegacy()) {
                 final int id = material.getId();
                 if (isAuthorized("essentials.itemspawn.item-" + id)) return true;
             }
@@ -819,9 +819,7 @@ public class User extends UserData implements Comparable<User>, IMessageRecipien
 
     public void checkActivity() {
         // Graceful time before the first afk check call. 
-        if (System.currentTimeMillis() - lastActivity <= 10000) {
-            return;
-        }
+        if (System.currentTimeMillis() - lastActivity <= 10000) return;
 
         final long autoafkkick = ess.getSettings().getAutoAfkKick();
         if (autoafkkick > 0
@@ -833,11 +831,10 @@ public class User extends UserData implements Comparable<User>, IMessageRecipien
             this.getBase().kickPlayer(kickReason);
 
             for (final User user : ess.getOnlineUsers()) {
-                if (user.isAuthorized("essentials.kick.notify")) {
-                    user.sendMessage(tl("playerKicked", Console.DISPLAY_NAME, getName(), kickReason));
-                }
+                if (user.isAuthorized("essentials.kick.notify")) user.sendMessage(tl("playerKicked", Console.DISPLAY_NAME, getName(), kickReason));
             }
         }
+
         final long autoafk = ess.getSettings().getAutoAfk();
         if (!isAfk() && autoafk > 0 && lastActivity + autoafk * 1000 < System.currentTimeMillis() && isAuthorized("essentials.afk.auto")) {
             setAfk(true, AfkStatusChangeEvent.Cause.ACTIVITY);
@@ -845,13 +842,13 @@ public class User extends UserData implements Comparable<User>, IMessageRecipien
                 setDisplayNick();
                 final String msg = tl("userIsAway", getDisplayName());
                 final String selfmsg = tl("userIsAwaySelf", getDisplayName());
+
                 if (!msg.isEmpty() && ess.getSettings().broadcastAfkMessage()) {
                     // exclude user from receiving general AFK announcement in favor of personal message
                     ess.broadcastMessage(this, msg, u -> u == this);
                 }
-                if (!selfmsg.isEmpty()) {
-                    this.sendMessage(selfmsg);
-                }
+
+                if (!selfmsg.isEmpty()) this.sendMessage(selfmsg);
             }
         }
     }
@@ -866,14 +863,14 @@ public class User extends UserData implements Comparable<User>, IMessageRecipien
             // This enables the no-god-in-worlds functionality where the actual player god mode state is never modified in disabled worlds,
             // but this method gets called every time the player takes damage. In the case that the world has god-mode disabled then this method
             // will return false and the player will take damage, even though they are in god mode (isGodModeEnabledRaw()).
-            if (!ess.getSettings().getNoGodWorlds().contains(this.getLocation().getWorld().getName())) {
-                return true;
-            }
+            if (!ess.getSettings().getNoGodWorlds().contains(this.getLocation().getWorld().getName())) return true;
         }
+
         if (isAfk()) {
             // Protect AFK players by representing them in a god mode state to render them invulnerable to damage.
             return ess.getSettings().getFreezeAfkPlayers();
         }
+
         return false;
     }
 
@@ -884,26 +881,21 @@ public class User extends UserData implements Comparable<User>, IMessageRecipien
     @Override
     public String getGroup() {
         final String result = ess.getPermissionsHandler().getGroup(base);
-        if (ess.getSettings().isDebug()) {
-            ess.getLogger().log(Level.INFO, "looking up groupname of " + base.getName() + " - " + result);
-        }
+        if (ess.getSettings().isDebug()) ess.getLogger().log(Level.INFO, "looking up groupname of " + base.getName() + " - " + result);
         return result;
     }
 
     @Override
     public boolean inGroup(final String group) {
         final boolean result = ess.getPermissionsHandler().inGroup(base, group);
-        if (ess.getSettings().isDebug()) {
-            ess.getLogger().log(Level.INFO, "checking if " + base.getName() + " is in group " + group + " - " + result);
-        }
+        if (ess.getSettings().isDebug()) ess.getLogger().log(Level.INFO, "checking if " + base.getName() + " is in group " + group + " - " + result);
         return result;
     }
 
     @Override
     public boolean canBuild() {
-        if (this.getBase().isOp()) {
-            return true;
-        }
+        if (this.getBase().isOp()) return true;
+
         return ess.getPermissionsHandler().canBuild(base, getGroup());
     }
 
@@ -933,16 +925,12 @@ public class User extends UserData implements Comparable<User>, IMessageRecipien
     @Override
     public void enableInvulnerabilityAfterTeleport() {
         final long time = ess.getSettings().getTeleportInvulnerability();
-        if (time > 0) {
-            teleportInvulnerabilityTimestamp = System.currentTimeMillis() + time;
-        }
+        if (time > 0) teleportInvulnerabilityTimestamp = System.currentTimeMillis() + time;
     }
 
     @Override
     public void resetInvulnerabilityAfterTeleport() {
-        if (teleportInvulnerabilityTimestamp != 0 && teleportInvulnerabilityTimestamp < System.currentTimeMillis()) {
-            teleportInvulnerabilityTimestamp = 0;
-        }
+        if (teleportInvulnerabilityTimestamp != 0 && teleportInvulnerabilityTimestamp < System.currentTimeMillis()) teleportInvulnerabilityTimestamp = 0;
     }
 
     @Override
@@ -972,42 +960,34 @@ public class User extends UserData implements Comparable<User>, IMessageRecipien
     @Override
     public void setVanished(final boolean set) {
         vanished = set;
+
         if (set) {
             for (final User user : ess.getOnlineUsers()) {
-                if (!user.isAuthorized("essentials.vanish.see")) {
-                    user.getBase().hidePlayer(getBase());
-                }
+                if (!user.isAuthorized("essentials.vanish.see")) user.getBase().hidePlayer(getBase());
             }
             setHidden(true);
             lastVanishTime = System.currentTimeMillis();
             ess.getVanishedPlayersNew().add(getName());
             this.getBase().setMetadata("vanished", new FixedMetadataValue(ess, true));
-            if (isAuthorized("essentials.vanish.effect")) {
-                this.getBase().addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1, false));
-            }
-            if (ess.getSettings().sleepIgnoresVanishedPlayers()) {
-                getBase().setSleepingIgnored(true);
-            }
+            if (isAuthorized("essentials.vanish.effect")) this.getBase().addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1, false));
+            if (ess.getSettings().sleepIgnoresVanishedPlayers()) getBase().setSleepingIgnored(true);
         } else {
             for (final Player p : ess.getOnlinePlayers()) {
                 p.showPlayer(getBase());
             }
+
             setHidden(false);
             ess.getVanishedPlayersNew().remove(getName());
             this.getBase().setMetadata("vanished", new FixedMetadataValue(ess, false));
-            if (isAuthorized("essentials.vanish.effect")) {
-                this.getBase().removePotionEffect(PotionEffectType.INVISIBILITY);
-            }
-            if (ess.getSettings().sleepIgnoresVanishedPlayers() && !isAuthorized("essentials.sleepingignored")) {
-                getBase().setSleepingIgnored(false);
-            }
+            if (isAuthorized("essentials.vanish.effect")) this.getBase().removePotionEffect(PotionEffectType.INVISIBILITY);
+
+            if (ess.getSettings().sleepIgnoresVanishedPlayers() && !isAuthorized("essentials.sleepingignored")) getBase().setSleepingIgnored(false);
         }
     }
 
     public boolean checkSignThrottle() {
-        if (isSignThrottled()) {
-            return true;
-        }
+        if (isSignThrottled()) return true;
+
         updateThrottle();
         return false;
     }
@@ -1044,9 +1024,7 @@ public class User extends UserData implements Comparable<User>, IMessageRecipien
 
     @Override
     public void sendMessage(final String message) {
-        if (!message.isEmpty()) {
-            base.sendMessage(message);
-        }
+        if (!message.isEmpty()) base.sendMessage(message);
     }
 
     @Override
@@ -1056,11 +1034,9 @@ public class User extends UserData implements Comparable<User>, IMessageRecipien
 
     @Override
     public boolean equals(final Object object) {
-        if (!(object instanceof User)) {
-            return false;
-        }
-        return this.getName().equalsIgnoreCase(((User) object).getName());
+        if (!(object instanceof User)) return false;
 
+        return this.getName().equalsIgnoreCase(((User) object).getName());
     }
 
     @Override
@@ -1115,9 +1091,7 @@ public class User extends UserData implements Comparable<User>, IMessageRecipien
 
     @Override
     public void setAfkMessage(final String message) {
-        if (isAfk()) {
-            this.afkMessage = message;
-        }
+        if (isAfk()) this.afkMessage = message;
     }
 
     @Override
@@ -1163,8 +1137,10 @@ public class User extends UserData implements Comparable<User>, IMessageRecipien
 
     public void notifyOfMail() {
         final int unread = getUnreadMailAmount();
+
         if (unread != 0) {
             final int notifyPlayerOfMailCooldown = ess.getSettings().getNotifyPlayerOfMailCooldown() * 1000;
+
             if (System.currentTimeMillis() - lastNotifiedAboutMailsMs >= notifyPlayerOfMailCooldown) {
                 sendMessage(tl("youHaveNewMail", unread));
                 lastNotifiedAboutMailsMs = System.currentTimeMillis();
@@ -1203,11 +1179,13 @@ public class User extends UserData implements Comparable<User>, IMessageRecipien
     }
 
     public boolean isBaltopExempt() {
+
         if (getBase().isOnline()) {
             final boolean exempt = isAuthorized("essentials.balancetop.exclude");
             setBaltopExemptCache(exempt);
             return exempt;
         }
+
         return isBaltopExcludeCache();
     }
 
@@ -1218,25 +1196,23 @@ public class User extends UserData implements Comparable<User>, IMessageRecipien
     @Override
     public Block getTargetBlock(int maxDistance) {
         final Block block;
-        if (VersionUtil.getServerBukkitVersion().isLowerThan(VersionUtil.v1_13_2_R01) || (block = base.getTargetBlockExact(maxDistance)) == null) {
-            return base.getTargetBlock(null, maxDistance);
-        }
+
+        if (ServerVersion.isLegacy() || (block = base.getTargetBlockExact(maxDistance)) == null) return base.getTargetBlock(null, maxDistance);
+
         return block;
     }
 
     @Override
     public void setToggleShout(boolean toggleShout) {
         this.toggleShout = toggleShout;
-        if (ess.getSettings().isPersistShout()) {
-            setShouting(toggleShout);
-        }
+
+        if (ess.getSettings().isPersistShout()) setShouting(toggleShout);
     }
 
     @Override
     public boolean isToggleShout() {
-        if (ess.getSettings().isPersistShout()) {
-            return toggleShout = isShouting();
-        }
+        if (ess.getSettings().isPersistShout()) return toggleShout = isShouting();
+
         return toggleShout == null ? toggleShout = ess.getSettings().isShoutDefault() : toggleShout;
     }
 }

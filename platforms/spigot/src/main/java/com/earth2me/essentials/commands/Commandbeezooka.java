@@ -2,10 +2,10 @@ package com.earth2me.essentials.commands;
 
 import com.earth2me.essentials.Mob;
 import com.earth2me.essentials.User;
-import com.earth2me.essentials.utils.VersionUtil;
 import org.bukkit.Location;
 import org.bukkit.Server;
 import org.bukkit.entity.Entity;
+import us.crazycrew.crazyessentials.ServerVersion;
 
 import static com.earth2me.essentials.I18n.tl;
 
@@ -17,7 +17,7 @@ public class Commandbeezooka extends EssentialsCommand {
 
     @Override
     protected void run(final Server server, final User user, final String commandLabel, final String[] args) throws Exception {
-        if (VersionUtil.getServerBukkitVersion().isLowerThan(VersionUtil.v1_15_R01)) {
+        if (ServerVersion.isLessThan(ServerVersion.v1_15)) {
             user.sendMessage(tl("unsupportedFeature"));
             return;
         }

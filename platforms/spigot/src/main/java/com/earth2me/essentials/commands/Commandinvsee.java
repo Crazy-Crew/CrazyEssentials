@@ -1,9 +1,9 @@
 package com.earth2me.essentials.commands;
 
 import com.earth2me.essentials.User;
-import com.earth2me.essentials.utils.VersionUtil;
 import org.bukkit.Server;
 import org.bukkit.inventory.Inventory;
+import us.crazycrew.crazyessentials.ServerVersion;
 
 import java.util.Collections;
 import java.util.List;
@@ -33,7 +33,7 @@ public class Commandinvsee extends EssentialsCommand {
         if (args.length > 1 && user.isAuthorized("essentials.invsee.equip")) {
             inv = server.createInventory(invUser.getBase(), 9, "Equipped");
             inv.setContents(invUser.getBase().getInventory().getArmorContents());
-            if (VersionUtil.getServerBukkitVersion().isHigherThanOrEqualTo(VersionUtil.v1_9_4_R01)) {
+            if (ServerVersion.isAtLeast(ServerVersion.v1_9)) {
                 inv.setItem(4, invUser.getBase().getInventory().getItemInOffHand());
             }
         } else {

@@ -6,6 +6,7 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.material.MaterialData;
+import us.crazycrew.crazyessentials.ServerVersion;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -137,7 +138,7 @@ public final class MaterialUtil {
             return true;
         }
 
-        return VersionUtil.PRE_FLATTENING && LEGACY_SKULLS.contains(stack.getType()) && stack.getDurability() == 3;
+        return ServerVersion.isLegacy() && LEGACY_SKULLS.contains(stack.getType()) && stack.getDurability() == 3;
     }
 
     public static boolean isPotion(final Material material) {
@@ -165,11 +166,11 @@ public final class MaterialUtil {
     }
 
     public static boolean isAir(final Material material) {
-        return material == Material.AIR || (VersionUtil.getServerBukkitVersion().isHigherThanOrEqualTo(VersionUtil.v1_14_4_R01) && material.isAir());
+        return material == Material.AIR || (ServerVersion.isAtLeast(ServerVersion.v1_14) && material.isAir());
     }
 
     public static int getDamage(final ItemStack stack) {
-        if (VersionUtil.PRE_FLATTENING) {
+        if (ServerVersion.isLegacy()) {
             return stack.getDurability();
         }
         if (stack.getItemMeta() instanceof Damageable) {
@@ -179,7 +180,7 @@ public final class MaterialUtil {
     }
 
     public static void setDamage(final ItemStack stack, final int damage) {
-        if (VersionUtil.PRE_FLATTENING) {
+        if (ServerVersion.isLegacy()) {
             stack.setDurability((short) damage);
         } else {
             if (stack.getItemMeta() instanceof Damageable) {

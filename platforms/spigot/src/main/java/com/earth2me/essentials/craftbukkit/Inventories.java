@@ -1,12 +1,12 @@
 package com.earth2me.essentials.craftbukkit;
 
 import com.earth2me.essentials.utils.MaterialUtil;
-import com.earth2me.essentials.utils.VersionUtil;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import us.crazycrew.crazyessentials.ServerVersion;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,7 +19,7 @@ public final class Inventories {
     private static final int CHEST_SLOT = 38;
     private static final int LEG_SLOT = 37;
     private static final int BOOT_SLOT = 36;
-    private static final boolean HAS_OFFHAND = VersionUtil.getServerBukkitVersion().isHigherThanOrEqualTo(VersionUtil.v1_9_R01);
+    private static final boolean HAS_OFFHAND = ServerVersion.isAtLeast(ServerVersion.v1_9);
     private static final int INVENTORY_SIZE = HAS_OFFHAND ? 41 : 40;
 
     private Inventories() {

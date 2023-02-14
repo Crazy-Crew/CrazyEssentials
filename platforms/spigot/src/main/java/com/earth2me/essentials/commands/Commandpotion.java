@@ -4,7 +4,6 @@ import com.earth2me.essentials.MetaItemStack;
 import com.earth2me.essentials.Potions;
 import com.earth2me.essentials.User;
 import com.earth2me.essentials.utils.StringUtil;
-import com.earth2me.essentials.utils.VersionUtil;
 import com.google.common.collect.Lists;
 import org.bukkit.Material;
 import org.bukkit.Server;
@@ -12,6 +11,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import us.crazycrew.crazyessentials.ServerVersion;
 
 import java.util.Collections;
 import java.util.List;
@@ -42,7 +42,7 @@ public class Commandpotion extends EssentialsCommand {
         }
 
         boolean holdingPotion = stack.getType() == Material.POTION;
-        if (!holdingPotion && VersionUtil.getServerBukkitVersion().isHigherThanOrEqualTo(VersionUtil.v1_9_R01)) {
+        if (!holdingPotion && ServerVersion.isAtLeast(ServerVersion.v1_9)) {
             holdingPotion = stack.getType() == Material.SPLASH_POTION || stack.getType() == Material.LINGERING_POTION;
         }
         if (holdingPotion) {

@@ -6,12 +6,12 @@ import com.earth2me.essentials.User;
 import com.earth2me.essentials.craftbukkit.Inventories;
 import com.earth2me.essentials.utils.MaterialUtil;
 import com.earth2me.essentials.utils.StringUtil;
-import com.earth2me.essentials.utils.VersionUtil;
 import com.google.common.collect.Lists;
 import net.ess3.api.IUser;
 import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.inventory.ItemStack;
+import us.crazycrew.crazyessentials.ServerVersion;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -125,7 +125,7 @@ public class Commandrepair extends EssentialsCommand {
 
     private Trade getCharge(final Material material) {
         final String itemName = material.toString().toLowerCase(Locale.ENGLISH);
-        if (VersionUtil.PRE_FLATTENING) {
+        if (ServerVersion.isLegacy()) {
             final int itemId = material.getId();
             return new Trade("repair-" + itemName.replace('_', '-'), new Trade("repair-" + itemId, new Trade("repair-item", ess), ess), ess);
         } else {

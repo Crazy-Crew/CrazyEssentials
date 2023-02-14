@@ -4,11 +4,11 @@ import com.earth2me.essentials.ManagedFile;
 import com.earth2me.essentials.utils.EnumUtil;
 import com.earth2me.essentials.utils.NumberUtil;
 import com.earth2me.essentials.utils.StringUtil;
-import com.earth2me.essentials.utils.VersionUtil;
 import net.ess3.api.IEssentials;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
+import us.crazycrew.crazyessentials.ServerVersion;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -202,7 +202,7 @@ public class LegacyItemDb extends AbstractItemDb {
             }
             retval = ess.getSpawnEggProvider().createEggItem(type);
         } else if (mat.name().endsWith("POTION")
-            && VersionUtil.getServerBukkitVersion().isLowerThan(VersionUtil.v1_11_R01)) { // Only apply this to pre-1.11 as items.csv might only work in 1.11
+            && ServerVersion.isLessThan(ServerVersion.v1_11)) { // Only apply this to pre-1.11 as items.csv might only work in 1.11
             retval = ess.getPotionMetaProvider().createPotionItem(mat, metaData);
         } else {
             retval.setDurability(metaData);

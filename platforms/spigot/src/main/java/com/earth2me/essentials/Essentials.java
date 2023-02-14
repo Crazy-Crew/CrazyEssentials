@@ -39,7 +39,6 @@ import com.earth2me.essentials.textreader.KeywordReplacer;
 import com.earth2me.essentials.textreader.SimpleTextInput;
 import com.earth2me.essentials.userstorage.ModernUserMap;
 import com.earth2me.essentials.utils.FormatUtil;
-import com.earth2me.essentials.utils.VersionUtil;
 import io.papermc.lib.PaperLib;
 import net.ess3.api.Economy;
 import net.ess3.api.IEssentials;
@@ -120,7 +119,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.JavaPluginLoader;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scheduler.BukkitTask;
-
+import us.crazycrew.crazyessentials.ServerVersion;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -140,6 +139,9 @@ import java.util.logging.Logger;
 import static com.earth2me.essentials.I18n.tl;
 
 public class Essentials extends JavaPlugin implements net.ess3.api.IEssentials {
+
+    private static Essentials plugin;
+
     private static final Logger BUKKIT_LOGGER = Logger.getLogger("Essentials");
     private static Logger LOGGER = null;
     private final transient TNTExplodeListener tntListener = new TNTExplodeListener();
@@ -188,6 +190,7 @@ public class Essentials extends JavaPlugin implements net.ess3.api.IEssentials {
     }
 
     public Essentials() {
+        this.plugin = this;
     }
 
     protected Essentials(final JavaPluginLoader loader, final PluginDescriptionFile description, final File dataFolder, final File file) {
@@ -258,31 +261,6 @@ public class Essentials extends JavaPlugin implements net.ess3.api.IEssentials {
             execTimer.mark("I18n1");
 
             Console.setInstance(this);
-
-            switch (VersionUtil.getServerSupportStatus()) {
-                case NMS_CLEANROOM:
-                    getLogger().severe(tl("serverUnsupportedCleanroom"));
-                    break;
-                case DANGEROUS_FORK:
-                    getLogger().severe(tl("serverUnsupportedDangerous"));
-                    break;
-                case STUPID_PLUGIN:
-                    getLogger().severe(tl("serverUnsupportedDumbPlugins"));
-                    break;
-                case UNSTABLE:
-                    getLogger().severe(tl("serverUnsupportedMods"));
-                    break;
-                case OUTDATED:
-                    getLogger().severe(tl("serverUnsupported"));
-                    break;
-                case LIMITED:
-                    getLogger().info(tl("serverUnsupportedLimitedApi"));
-                    break;
-            }
-
-            if (VersionUtil.getSupportStatusClass() != null) {
-                getLogger().info(tl("serverUnsupportedClass", VersionUtil.getSupportStatusClass()));
-            }
 
             final PluginManager pm = getServer().getPluginManager();
             for (final Plugin plugin : pm.getPlugins()) {
@@ -360,23 +338,23 @@ public class Essentials extends JavaPlugin implements net.ess3.api.IEssentials {
             spawnerItemProvider = new BlockMetaSpawnerItemProvider();
 
             //Spawner block providers
-            if (VersionUtil.getServerBukkitVersion().isLowerThan(VersionUtil.v1_12_0_R01)) {
+            if (ServerVersion.isLessThan(ServerVersion.v1_12)) {
                 spawnerBlockProvider = new ReflSpawnerBlockProvider();
             } else {
                 spawnerBlockProvider = new BukkitSpawnerBlockProvider();
             }
 
             //Spawn Egg Providers
-            if (VersionUtil.getServerBukkitVersion().isLowerThan(VersionUtil.v1_9_R01)) {
+            if (ServerVersion.isLessThan(ServerVersion.v1_9)) {
                 spawnEggProvider = new LegacySpawnEggProvider();
-            } else if (VersionUtil.getServerBukkitVersion().isLowerThanOrEqualTo(VersionUtil.v1_12_2_R01)) {
+            } else if (ServerVersion.isAtLeast(ServerVersion.v1_12)) {
                 spawnEggProvider = new ReflSpawnEggProvider();
             } else {
                 spawnEggProvider = new FlatSpawnEggProvider();
             }
 
             //Potion Meta Provider
-            if (VersionUtil.getServerBukkitVersion().isLowerThan(VersionUtil.v1_9_R01)) {
+            if (ServerVersion.isLessThan(ServerVersion.v1_9)) {
                 potionMetaProvider = new LegacyPotionMetaProvider();
             } else {
                 potionMetaProvider = new BasePotionDataProvider();
@@ -384,7 +362,7 @@ public class Essentials extends JavaPlugin implements net.ess3.api.IEssentials {
 
             //Server State Provider
             //Container Provider
-            if (PaperLib.isPaper() && VersionUtil.getServerBukkitVersion().isHigherThanOrEqualTo(VersionUtil.v1_15_2_R01)) {
+            if (PaperLib.isPaper() && ServerVersion.isAtLeast(ServerVersion.v1_15)) {
                 serverStateProvider = new PaperServerStateProvider();
                 containerProvider = new PaperContainerProvider();
                 serializationProvider = new PaperSerializationProvider();
@@ -406,7 +384,7 @@ public class Essentials extends JavaPlugin implements net.ess3.api.IEssentials {
             }
 
             //Known Commands Provider
-            if (PaperLib.isPaper() && VersionUtil.getServerBukkitVersion().isHigherThanOrEqualTo(VersionUtil.v1_11_2_R01)) {
+            if (PaperLib.isPaper() && ServerVersion.isAtLeast(ServerVersion.v1_11)) {
                 knownCommandsProvider = new PaperKnownCommandsProvider();
             } else {
                 knownCommandsProvider = new ReflKnownCommandsProvider();
@@ -416,38 +394,34 @@ public class Essentials extends JavaPlugin implements net.ess3.api.IEssentials {
             formattedCommandAliasProvider = new ReflFormattedCommandAliasProvider(PaperLib.isPaper());
 
             // Material Tag Providers
-            if (VersionUtil.getServerBukkitVersion().isHigherThanOrEqualTo(VersionUtil.v1_13_0_R01)) {
-                materialTagProvider = PaperLib.isPaper() ? new PaperMaterialTagProvider() : new BukkitMaterialTagProvider();
-            }
+            if (ServerVersion.isAtLeast(ServerVersion.v1_13)) materialTagProvider = PaperLib.isPaper() ? new PaperMaterialTagProvider() : new BukkitMaterialTagProvider();
 
             // Sync Commands Provider
             syncCommandsProvider = new ReflSyncCommandsProvider();
 
-            if (VersionUtil.getServerBukkitVersion().isHigherThanOrEqualTo(VersionUtil.v1_14_4_R01)) {
-                persistentDataProvider = new ModernPersistentDataProvider(this);
+            if (ServerVersion.isAtLeast(ServerVersion.v1_14)) {
+                this.persistentDataProvider = new ModernPersistentDataProvider(this);
             } else {
                 persistentDataProvider = new ReflPersistentDataProvider(this);
             }
 
             onlineModeProvider = new ReflOnlineModeProvider();
 
-            if (VersionUtil.getServerBukkitVersion().isHigherThanOrEqualTo(VersionUtil.v1_11_2_R01)) {
+            if (ServerVersion.isAtLeast(ServerVersion.v1_11)) {
                 unbreakableProvider = new ModernItemUnbreakableProvider();
             } else {
                 unbreakableProvider = new LegacyItemUnbreakableProvider();
             }
 
-            if (VersionUtil.getServerBukkitVersion().isHigherThanOrEqualTo(VersionUtil.v1_17_1_R01)) {
+            if (ServerVersion.isAtLeast(ServerVersion.v1_17)) {
                 worldInfoProvider = new ModernDataWorldInfoProvider();
-            } else if (VersionUtil.getServerBukkitVersion().isHigherThanOrEqualTo(VersionUtil.v1_16_5_R01)) {
+            } else if (ServerVersion.isAtLeast(ServerVersion.v1_16)) {
                 worldInfoProvider = new ReflDataWorldInfoProvider();
             } else {
                 worldInfoProvider = new FixedHeightWorldInfoProvider();
             }
 
-            if (VersionUtil.getServerBukkitVersion().isHigherThanOrEqualTo(VersionUtil.v1_14_4_R01)) {
-                signDataProvider = new ModernSignDataProvider(this);
-            }
+            if (ServerVersion.isAtLeast(ServerVersion.v1_14)) signDataProvider = new ModernSignDataProvider(this);
 
             execTimer.mark("Init(Providers)");
             reload();
@@ -1338,9 +1312,7 @@ public class Essentials extends JavaPlugin implements net.ess3.api.IEssentials {
         } else if (setting.equalsIgnoreCase("csv")) {
             return new LegacyItemDb(this);
         } else {
-            final VersionUtil.BukkitVersion version = VersionUtil.getServerBukkitVersion();
-
-            if (version.isHigherThanOrEqualTo(VersionUtil.v1_13_0_R01)) {
+            if (ServerVersion.isAtLeast(ServerVersion.v1_13)) {
                 return new FlatItemDb(this);
             } else {
                 return new LegacyItemDb(this);
@@ -1364,5 +1336,9 @@ public class Essentials extends JavaPlugin implements net.ess3.api.IEssentials {
         public void run() {
             ess.reload();
         }
+    }
+
+    public static Essentials getPlugin() {
+        return plugin;
     }
 }

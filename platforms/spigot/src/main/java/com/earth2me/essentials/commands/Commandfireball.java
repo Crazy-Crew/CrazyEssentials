@@ -2,7 +2,6 @@ package com.earth2me.essentials.commands;
 
 import com.earth2me.essentials.User;
 import com.earth2me.essentials.utils.FloatUtil;
-import com.earth2me.essentials.utils.VersionUtil;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import org.bukkit.Server;
@@ -21,6 +20,7 @@ import org.bukkit.entity.Trident;
 import org.bukkit.entity.WitherSkull;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.util.Vector;
+import us.crazycrew.crazyessentials.ServerVersion;
 
 import java.util.Collections;
 import java.util.List;
@@ -46,13 +46,13 @@ public class Commandfireball extends EssentialsCommand {
             .put("snowball", Snowball.class)
             .put("expbottle", ThrownExpBottle.class);
 
-        if (VersionUtil.getServerBukkitVersion().isHigherThanOrEqualTo(VersionUtil.v1_9_R01)) {
+        if (ServerVersion.isAtLeast(ServerVersion.v1_9)) {
             builder.put("dragon", DragonFireball.class)
                 .put("splashpotion", SplashPotion.class)
                 .put("lingeringpotion", LingeringPotion.class);
         }
 
-        if (VersionUtil.getServerBukkitVersion().isHigherThanOrEqualTo(VersionUtil.v1_13_0_R01)) {
+        if (ServerVersion.isAtLeast(ServerVersion.v1_13)) {
             builder.put("trident", Trident.class);
         }
 

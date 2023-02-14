@@ -4,7 +4,6 @@ import com.earth2me.essentials.CommandSource;
 import com.earth2me.essentials.User;
 import com.earth2me.essentials.utils.EnumUtil;
 import com.earth2me.essentials.utils.NumberUtil;
-import com.earth2me.essentials.utils.VersionUtil;
 import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.inventory.FurnaceRecipe;
@@ -13,6 +12,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
+import us.crazycrew.crazyessentials.ServerVersion;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -32,7 +32,7 @@ public class Commandrecipe extends EssentialsCommand {
         super("recipe");
         // On versions at or above 1.12, we need recipe book API
         boolean unsupported = false;
-        if (VersionUtil.getServerBukkitVersion().isHigherThanOrEqualTo(VersionUtil.v1_12_0_R01)) {
+        if (ServerVersion.isAtLeast(ServerVersion.v1_12)) {
             try {
                 Class.forName("com.destroystokyo.paper.event.player.PlayerRecipeBookClickEvent");
             } catch (final ClassNotFoundException e) {
@@ -117,7 +117,7 @@ public class Commandrecipe extends EssentialsCommand {
                     if (item == null) {
                         continue;
                     }
-                    if (VersionUtil.PRE_FLATTENING && item.getDurability() == Short.MAX_VALUE) {
+                    if (ServerVersion.isLegacy() && item.getDurability() == Short.MAX_VALUE) {
                         item.setDurability((short) 0);
                     }
                     view.getTopInventory().setItem(j * 3 + k + 1, item);
@@ -160,7 +160,7 @@ public class Commandrecipe extends EssentialsCommand {
             final InventoryView view = user.getBase().openWorkbench(null, true);
             for (int i = 0; i < ingredients.size(); i++) {
                 final ItemStack item = ingredients.get(i);
-                if (VersionUtil.PRE_FLATTENING && item.getDurability() == Short.MAX_VALUE) {
+                if (ServerVersion.isLegacy() && item.getDurability() == Short.MAX_VALUE) {
                     item.setDurability((short) 0);
                 }
                 view.setItem(i + 1, item);
