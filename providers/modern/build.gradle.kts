@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    api(project(":essentialsx-provider-reflection"))
+    api(project(":crazyessentials-provider-reflection"))
 
     compileOnly(libs.spigot)
 }

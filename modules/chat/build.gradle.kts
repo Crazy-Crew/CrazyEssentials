@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    compileOnly(project(":essentialsx-platform-spigot"))
+    compileOnly(project(":crazyessentials-platform-spigot"))
 
     compileOnly(libs.spigot)
 }

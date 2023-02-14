@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":essentialsx-provider-base"))
+    implementation(project(":crazyessentials-provider-base"))
 
     compileOnly(libs.spigot.eight)
 }

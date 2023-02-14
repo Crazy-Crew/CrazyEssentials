@@ -11,7 +11,7 @@ softdepend: [Vault, LuckPerms]
 
 depend: [Essentials]
 
-authors: [Zenexer, ementalo, Aelux, Brettflan, KimKandor, snowleo, ceulemans, Xeology, KHobbits, md_5, Okamosy, Iaccidentally, mdcfe, JRoy, triagonal]
+authors: [Ryder Belserion, Zenexer, ementalo, Aelux, Brettflan, KimKandor, snowleo, ceulemans, Xeology, KHobbits, md_5, Okamosy, Iaccidentally, mdcfe, JRoy, triagonal]
 
 api-version: "1.13"
 

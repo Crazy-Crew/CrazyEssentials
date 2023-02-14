@@ -7,7 +7,7 @@ java {
 }
 
 dependencies {
-    implementation(project(":essentialsx-provider-base")) {
+    implementation(project(":crazyessentials-provider-base")) {
         exclude(module = "spigot-api")
     }
 

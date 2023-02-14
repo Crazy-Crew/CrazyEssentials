@@ -21,7 +21,7 @@ pluginManagement {
     }
 }
 
-rootProject.name = "EssentialsX"
+rootProject.name = "CrazyEssentials"
 
 val lowerCase = rootProject.name.toLowerCase()
 

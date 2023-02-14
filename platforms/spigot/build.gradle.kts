@@ -13,15 +13,15 @@ dependencies {
 
     compileOnly(libs.vault)
 
-    api(project(":essentialsx-provider-base"))
-    api(project(":essentialsx-provider-legacy")) {
+    api(project(":crazyessentials-provider-base"))
+    api(project(":crazyessentials-provider-legacy")) {
         exclude(group = "org.spigotmc", module = "spigot")
     }
-    api(project(":essentialsx-provider-modern")) {
+    api(project(":crazyessentials-provider-modern")) {
         exclude(group = "org.bukkit", module = "bukkit")
     }
-    api(project(":essentialsx-provider-paper"))
-    api(project(":essentialsx-provider-reflection")) {
+    api(project(":crazyessentials-provider-paper"))
+    api(project(":crazyessentials-provider-reflection")) {
         exclude(group = "org.bukkit", module = "bukkit")
     }
 }

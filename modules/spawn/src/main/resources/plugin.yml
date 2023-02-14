@@ -9,7 +9,7 @@ description: ${description}
 
 depend: [Essentials]
 
-authors: [Zenexer, ementalo, Aelux, Brettflan, KimKandor, snowleo, ceulemans, Xeology, KHobbits, SupaHam, mdcfe, DoNotSpamPls, JRoy]
+authors: [Ryder Belserion, Zenexer, ementalo, Aelux, Brettflan, KimKandor, snowleo, ceulemans, Xeology, KHobbits, SupaHam, mdcfe, DoNotSpamPls, JRoy]
 
 api-version: "1.13"
 
